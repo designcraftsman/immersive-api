@@ -1,13 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const studentCtrl = require('../controllers/student');
+const auth = require('../middleware/auth');
 
-
-router.post('/add', studentCtrl.addStudent);
-router.get('/', studentCtrl.getAllStudents);
-router.get('/:id', studentCtrl.getStudent);
-router.put('/:id', studentCtrl.updateStudent);
-router.delete('/:id', studentCtrl.deleteStudent);
+router.post('/add', auth ,studentCtrl.addStudent);
+router.get('/',auth ,studentCtrl.getAllStudents);
+router.get('/:id',auth ,studentCtrl.getStudent);
+router.put('/:id',auth ,studentCtrl.updateStudent);
+router.delete('/:id',auth ,studentCtrl.deleteStudent);
 
 
 module.exports = router;
