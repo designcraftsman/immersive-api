@@ -75,4 +75,4 @@ class Enviroment {
 }
 
 
-modeule.exports = Enviroment;
+module.exports = Enviroment;
