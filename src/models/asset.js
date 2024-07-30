@@ -2,7 +2,7 @@ const pool = require("../database/db");
 
 class Asset{
     constructor(idcourse ,name, type, url,description, size, position, scale, rotation) {
-       this.idcourse = idcourse;
+        this.idcourse = idcourse;
         this.name = name;
         this.type = type;
         this.url = url;
@@ -25,39 +25,45 @@ class Asset{
         }
       }
 
-    static async deleteGroup(id){
+    static async deleteAsset(id){
         try{
-            await pool.query("DELETE FROM groupe WHERE idgroupe = $1", [id]);
+            await pool.query("DELETE FROM asset WHERE idasset = $1", [id]);
         }catch(error){
-            throw new Error("Error deleting group");
+            throw new Error("Error deleting asset");
         }
       }
 
-    static async getGroup(id){
+    static async getAsset(id){
         try{
-            const response = await pool.query("SELECT * FROM groupe WHERE idgroupe = $1", [id]);
+            const response = await pool.query("SELECT * FROM asset WHERE idasset = $1", [id]);
             return response.rows[0];
         }catch(error){
-            throw new Error("Error getting group");
+            throw new Error("Error getting asset");
         }
       }
 
     static async getAll(){
         try{
-            const response = await pool.query("SELECT * FROM groupe");
+            const response = await pool.query("SELECT * FROM asset");
             return response.rows;
         }catch(error){
-            throw new Error("Error getting groups");
+            throw new Error("Error getting assets");
         }
       }
 
-      async updateGroup(id) {
+
+      async updateAsset(id) {
         try {
           const fields = {};
-          if (this.idteacher !== undefined) fields.idteacher = this.idteacher;
+          if (this.idcourse !== undefined) fields.idcourse = this.idcourse;
           if (this.name !== undefined) fields.name = this.name;
+          if (this.type !== undefined) fields.type = this.type;
+          if (this.url !== undefined) fields.url = this.url;
           if (this.description !== undefined) fields.description = this.description;
-          if (this.students !== undefined) fields.students = this.students; // Convert array to JSON string
+          if (this.size !== undefined) fields.size = this.size;
+          if (this.position !== undefined) fields.position = this.position;
+          if (this.scale !== undefined) fields.scale = this.scale;
+          if (this.rotation !== undefined) fields.rotation = this.rotation;
     
           if (Object.keys(fields).length === 0) {
             throw new Error("No fields provided for update.");
@@ -68,17 +74,17 @@ class Asset{
           const setClause = keys.map((key, index) => `${key} = $${index + 1}`).join(', ');
           values.push(id); // Add id to values
     
-          const queryText = `UPDATE groupe SET ${setClause} WHERE idgroupe = $${values.length} RETURNING *`;
+          const queryText = `UPDATE asset SET ${setClause} WHERE idasset = $${values.length} RETURNING *`;
           const result = await pool.query(queryText, values);
     
           if (result.rowCount === 0) {
-            throw new Error("Group not found.");
+            throw new Error("Asset not found.");
           }
     
           return result.rows[0];
         } catch (error) {
-          console.error('Error updating group:', error.message);
-          throw new Error("Error updating group");
+          console.error('Error updating asset:', error.message);
+          throw new Error("Error updating asset");
         }
       }
 }
