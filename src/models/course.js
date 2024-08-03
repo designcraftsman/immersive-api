@@ -1,7 +1,7 @@
 const pool = require("../database/db");
 
 class Course {
-    constructor(idEnvironnement, idTeacher, name, creationDate, creationTime, description, maxVisitors, code) {
+    constructor(idEnvironnement, idTeacher, name, creationDate, creationTime, description, maxVisitors, code , image) {
         this.idEnvironnement = idEnvironnement;
         this.idTeacher = idTeacher;
         this.name = name;
@@ -10,6 +10,7 @@ class Course {
         this.description = description;
         this.maxVisitors = maxVisitors;
         this.code = code;
+        this.image = image;
     }
 
     async addCourse() {

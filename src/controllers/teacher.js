@@ -9,13 +9,15 @@ exports.signup = (req, res, next) => {
         teacher.register().then(
           () => {
             res.status(201).json({
-              message: 'Teacher added successfully!'
+              message: 'Teacher added successfully!',
+              success: true
             });
           }
         ).catch(
           (error) => {
             res.status(500).json({
-              error: error
+              error: error,
+              success: false
             });
           }
         );
@@ -30,8 +32,19 @@ exports.signup = (req, res, next) => {
     try {
       const response = await Teacher.login(email, password);
       res.status(200).json(response);
+      console.log(response);
     } catch (error) {
       res.status(401).json({ error: error.message });
     }
   };
   
+
+  exports.getTeacher = async (req,res)=>{
+      const { id } = req.params;
+      try{
+        const response = await Teacher.get(id);
+        res.status(201).json(response);
+      }catch( error ){
+        res.status(401).json({error: error.message});
+      }
+  }

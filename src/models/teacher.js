@@ -14,11 +14,16 @@ class Teacher{
 
     async register() {
         try {
-          const newTeacher = await pool.query(
+          const verifyEmail = await pool.query("SELECT * FROM teacher WHERE email = $1", [this.email]);
+          if(verifyEmail.rows.length > 0) {
+            throw new Error("Email already exists");
+          }else{
+           await pool.query(
             "INSERT INTO teacher (firstname, lastname, birthdate, email, password, specialisation) VALUES ($1, $2, $3, $4, $5, $6)",
             [this.firstName, this.lastName, this.dateOfBirth, this.email, this.password, this.specialization]
           );
           console.log("Teacher added successfully!");
+        }
         } catch (error) {
           throw new Error("Error saving teacher");
         }
@@ -40,9 +45,9 @@ class Teacher{
             throw new Error("Invalid password");
           }
       
-          const token = jwt.sign({ id: teacher.id}, 'TOKEN_SECRET', { expiresIn: '4h' });
-          console.log(token);
-          return { token, id:  teacher.id  };
+          const token = jwt.sign({ id: teacher.idteacher}, 'TOKEN_SECRET', { expiresIn: '4h' });
+  
+          return { token: token, id:  teacher.idteacher , success: true };
         } catch (error) {
           console.error("Login failed:", error);
           if (error.message === "Teacher not found" || error.message === "Invalid password") {
@@ -51,9 +56,16 @@ class Teacher{
           throw new Error("Login failed");
         }
       }
-      
-      
-    
+
+      static async get(id){
+        try{
+        const teacher = await pool.query("SELECT * FROM teacher where idteacher = $1",[id]);
+        return teacher.rows[0];
+        }catch(error){
+          throw new Error("Error finding teacher");
+        }
+      }
+
 }
 
 module.exports = Teacher;

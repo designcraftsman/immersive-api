@@ -2,8 +2,10 @@ const Course = require('../models/course');
 
 exports.addCourse = async (req, res) => {
     try {
-        const { idEnvironnement, idTeacher, name, creationDate, creationTime, description, maxVisitors, code } = req.body;
-        const course = new Course(idEnvironnement, idTeacher, name, creationDate, creationTime, description, maxVisitors, code);
+        const { idEnvironnement, idTeacher, name, creationDate, creationTime, description, maxVisitors, code, image } = req.body;
+        const url = req.protocol + '://' + req.get('host');
+        image = url + '/images/' + req.file.filename;
+        const course = new Course(idEnvironnement, idTeacher, name, creationDate, creationTime, description, maxVisitors, code, image);
         await course.addCourse();
         res.status(201).json({ message: "Course added successfully" });
     } catch (error) {

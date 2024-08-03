@@ -13,7 +13,9 @@ const quizElementRouter = require('./routes/quizElement');
 const quizElementAnswerRouter = require('./routes/quizElementAnswer');
 const quizResultRouter = require('./routes/quizResult');
 const sessionRouter = require('./routes/session');
+const path = require('path');
 
+app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use(express.json());
 app.use(cors());
 

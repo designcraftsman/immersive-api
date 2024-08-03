@@ -2,20 +2,27 @@ const Student = require("../models/student");
 
 exports.addStudent = async (req, res) => {
     try {
-      const { firstName, lastName, dateOfBirth, email, password } = req.body;
-      const student = new Student(firstName, lastName, dateOfBirth, email, password);
+      const { firstName, lastName, birthDate, email, password } = req.body;
+      const student = new Student(firstName, lastName, birthDate, email, password);
       const newStudent = await student.save();
-      res.status(201).json({ message: "Student added successfully", student: newStudent });
+      res.status(201).json({ 
+        message: "Student added successfully", 
+        success: true,
+         student: newStudent
+         });
     } catch (error) {
       console.error(error.message);
-      res.status(500).json({ error: "An error occurred" });
+      res.status(500).json({
+         error: "An error occurred",
+         success: false
+         });
     }
 };
 
 exports.getAllStudents = async (req, res) => {
     try {
-      const allStudents = await Student.getAll();
-      res.json(allStudents);
+      const students = await Student.getAll();
+      res.status(201).json({ message: "Students found successfully", students });
     } catch (error) {
       console.error(error.message);
       res.status(500).json({ error: "An error occurred" });

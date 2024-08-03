@@ -2,8 +2,9 @@ const express = require('express');
 const router = express.Router();
 const courseCtrl = require('../controllers/course');
 const auth = require('../middleware/auth');
+const multer = require('../middleware/multer-config');
 
-router.post('/add' ,auth,courseCtrl.addCourse);
+router.post('/add' ,auth, multer,courseCtrl.addCourse);
 router.get('/get/:id',auth,courseCtrl.getCourse);
 router.get('/',auth,courseCtrl.getAllCourses);
 router.delete('/delete/:id',auth,courseCtrl.deleteCourse);
